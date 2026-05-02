@@ -113,6 +113,7 @@ This project automates the entire first-stage recruitment process for an **AI Au
               │  Dashboard      │    score, decision, reason
               └─────────────────┘
 ```
+<img width="429" height="581" alt="architecture" src="https://github.com/user-attachments/assets/52563259-de95-4dc6-944e-c0df44d8144a" />
 
 ---
 
