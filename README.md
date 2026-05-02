@@ -58,61 +58,7 @@ This project automates the entire first-stage recruitment process for an **AI Au
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     AI CV SCREENING PIPELINE                     │
-└─────────────────────────────────────────────────────────────────┘
 
-📧 Email received (IMAP / Gmail)
-        │
-        ▼
-┌───────────────────┐
-│  Phase 1 Filter   │  ← JavaScript keyword matching
-│  + PDF Check      │    "candidature", "cv", "engineer"...
-└───────────────────┘
-        │ match + PDF attached
-        ▼
-┌───────────────────┐
-│  Phase 2 — LLM    │  ← OpenRouter LLM validates
-│  Validation       │    is_application: true/false
-└───────────────────┘
-        │ confirmed application
-        ▼
-┌───────────────────┐
-│  PDF Extraction   │  ← Extract raw text from CV
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│  Data Merge       │  ← Combine email metadata + CV text
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│  LLM Scoring      │  ← Score candidate vs job description
-│  & Analysis       │    Returns: score, skills, recommendation
-└───────────────────┘
-        │
-        ├── score ≥ 70 ──────────────────┐
-        │                                │
-        ▼                                ▼
-┌───────────────┐              ┌───────────────────┐
-│  ✅ Accept     │              │  ❌ Reject         │
-│  Email (LLM)  │              │  Email (LLM)      │
-└───────────────┘              └───────────────────┘
-        │                                │
-        └──────────────┬─────────────────┘
-                       ▼
-              ┌─────────────────┐
-              │  SMTP Send      │  ← Personalized email sent
-              └─────────────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │  Google Sheets  │  ← Log: timestamp, email,
-              │  Dashboard      │    score, decision, reason
-              └─────────────────┘
-```
 <img width="429" height="581" alt="architecture" src="https://github.com/user-attachments/assets/52563259-de95-4dc6-944e-c0df44d8144a" />
 
 ---
