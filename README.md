@@ -1,12 +1,13 @@
-# 🤖 AI CV Screening — Automated Recruitment Pipeline
+# 🤖 AI CV Screening: Automated Recruitment Pipeline
 
-> An intelligent, fully automated recruitment workflow built with **n8n**, **OpenRouter LLMs**, and **Google Sheets** — screens job applications, analyzes CVs, and sends personalized responses without human intervention.
+> An intelligent, fully automated recruitment workflow built with **n8n**, **OpenRouter LLMs**, and **Google Sheets** screens job applications, analyzes CVs, and sends personalized responses without human intervention.
 
-![n8n](https://img.shields.io/badge/n8n-Self%20Hosted-orange?style=flat-square&logo=n8n)
-![OpenRouter](https://img.shields.io/badge/LLM-OpenRouter%20Free-blue?style=flat-square)
-![Google Sheets](https://img.shields.io/badge/Storage-Google%20Sheets-green?style=flat-square&logo=googlesheets)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=flat-square&logo=docker)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
+![n8n](https://img.shields.io/badge/n8n-Self--Hosted-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
+![OpenRouter](https://img.shields.io/badge/LLM-OpenRouter%20Free-6366F1?style=for-the-badge&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Dashboard-34A853?style=for-the-badge&logo=googlesheets&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-Logic-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge)
 
 ---
 
@@ -36,7 +37,7 @@ This project automates the entire first-stage recruitment process for an **AI Au
 4. Sends a **personalized, human-sounding** acceptance or rejection email
 5. Logs everything to a Google Sheets dashboard
 
-**Zero human intervention required.** Every email feels personal — candidates never know it's automated.
+**Zero human intervention required.** Every email feels personal candidates never know it's automated.
 
 ---
 
@@ -117,13 +118,13 @@ This project automates the entire first-stage recruitment process for an **AI Au
 
 ## 🔍 Workflow Breakdown
 
-### Phase 1 — Keyword Filter (JavaScript)
+### Phase 1: Keyword Filter (JavaScript)
 Checks email subject + body for recruitment-related keywords. Also verifies a PDF attachment is present. Emails without CVs are immediately discarded.
 
 **Keywords:** `candidature`, `cv`, `application`, `postuler`, `engineer`, `automation`, `poste`
 
-### Phase 2 — LLM Validation (OpenRouter)
-Sends the email content to a free LLM to confirm it's a genuine job application — not spam, not a newsletter, not an unrelated email. Returns structured JSON with confidence score.
+### Phase 2: LLM Validation (OpenRouter)
+Sends the email content to a free LLM to confirm it's a genuine job application not spam, not a newsletter, not an unrelated email. Returns structured JSON with confidence score.
 
 ### PDF Extraction
 Uses n8n's native `Extract from File` node to pull raw text from the attached CV PDF.
@@ -184,8 +185,8 @@ Every processed application is logged with:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ai-cv-screening-n8n.git
-cd ai-cv-screening-n8n
+git clone https://github.com/Ayoub-Elkhaiari/AI-CV-Screening-Automated-Recruitment-Pipeline.git
+cd AI-CV-Screening-Automated-Recruitment-Pipeline
 ```
 
 ### 2. Start n8n with Docker
@@ -300,7 +301,7 @@ Data Scientist & AI Engineer — specialized in ML pipelines, LLMs, and AI autom
 
 ## 📄 License
 
-MIT License — feel free to use, modify, and distribute.
+MIT License feel free to use, modify, and distribute.
 
 ---
 
