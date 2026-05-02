@@ -237,12 +237,9 @@ ai-cv-screening-n8n/
 
 **Ayoub EL KHAIARI**
 
-Data Scientist & AI Engineer — specialized in ML pipelines, LLMs, and AI automation.
 
-- 🌐 [ayoub-elkhaiari.netlify.app](https://ayoub-elkhaiari.netlify.app)
 - 💼 [LinkedIn](https://linkedin.com/in/ayoub-elkhaiari-2001c17)
 - 🐙 [GitHub](https://github.com/Ayoub-Elkhaiari)
-- 📧 ayoub.elkhaiari@usmba.ac.ma
 
 ---
 
