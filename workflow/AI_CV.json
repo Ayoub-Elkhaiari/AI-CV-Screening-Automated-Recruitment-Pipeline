@@ -1,0 +1,551 @@
+{
+  "name": "AI_CV",
+  "nodes": [
+    {
+      "parameters": {
+        "downloadAttachments": true,
+        "options": {
+          "forceReconnect": 1
+        }
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2.1,
+      "position": [
+        -1104,
+        -272
+      ],
+      "id": "8dc58214-e7ba-4e17-bd0b-b47b9d8b7555",
+      "name": "Email Trigger (IMAP)",
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "imap": {
+          "id": "vVaPHxkvqb2sdRom",
+          "name": "IMAP account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6e779968-aa99-4672-b509-6ca225570d97",
+              "leftValue": "={{ $json.keyword_match }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -736,
+        -592
+      ],
+      "id": "a8e6c4b7-f70e-4b7f-b877-900a62dba59e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -16
+      ],
+      "id": "24c51e1c-2777-4d0f-808a-25bffa74c4b8",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "K12linSm4GzmLxoG",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        -496
+      ],
+      "id": "31bbc4eb-ccea-4e6f-9803-7c8ff83a7f53",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -336
+      ],
+      "id": "46f3761e-f277-441c-b623-88456ddfd0eb",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.text || \"\";\n\n// Remove markdown if present\nconst cleaned = raw\n  .replace(/```json\\n?/gi, \"\")\n  .replace(/```/g, \"\")\n  .trim();\n\nlet parsed;\n\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (e) {\n  return {\n    json: {\n      from: \"\",\n      subject: \"\",\n      is_application: false,\n      score: 0,\n      matched_skills: [],\n      missing_skills: [],\n      recommendation: \"reject\",\n      reason: \"JSON parse error\",\n      raw_output: raw // 👈 VERY useful for debugging\n    }\n  };\n}\n\nreturn {\n  json: {\n    from: parsed.email_address || \"\",\n    subject: parsed.subject || \"\",\n    is_application: parsed.is_application || false,\n    score: parsed.score || 0,\n    matched_skills: parsed.matched_skills || [],\n    missing_skills: parsed.missing_skills || [],\n    recommendation: parsed.recommendation || \"reject\",\n    reason: parsed.reason || \"\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        -656
+      ],
+      "id": "18184132-c824-496e-aed2-7ce6a5f43e93",
+      "name": "Parsing"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "22ce00ff-6277-4a63-a42b-1acb743abf88",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        688,
+        -512
+      ],
+      "id": "bb2767a7-e3ba-4807-9934-e0fc2174205a",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "fromEmail": "elkhaiariayoub@gmail.com",
+        "toEmail": "={{ $json.to_email }}",
+        "subject": "updates about you application",
+        "html": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        16
+      ],
+      "id": "0bd1796d-f173-4679-97df-f20c5318a13d",
+      "name": "Send an Email",
+      "webhookId": "0c63f027-4f80-4978-98d1-648d22635737",
+      "credentials": {
+        "smtp": {
+          "id": "rfrUMauO4QWuBg7V",
+          "name": "SMTP account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert HR recruiter.\n\nJOB DESCRIPTION:\nPosition: AI Automation Engineer\nRequired skills: n8n, JavaScript, REST APIs, Docker, Git, PostgreSQL, LLMs (OpenAI, Claude)\nLocation: Casablanca\nType: CDI\n\nCANDIDATE EMAIL:\nEmail: {{ $json.from }}\nSubject: {{ $json.subject }}\nBody: {{ $json.body }}\n\nCANDIDATE CV:\n{{ $json.text }}\n\nAnalyze this candidate and respond ONLY in valid JSON, no markdown. Include the email_address field:\n{\n  \"email_address\": \"{{ $json.from }}\",\n  \"subject\": \"{{ $json.subject }}\",\n  \"is_application\": true,\n  \"score\": 85,\n  \"matched_skills\": [\"skill1\", \"skill2\"],\n  \"missing_skills\": [\"skill1\", \"skill2\"],\n  \"recommendation\": \"accept\",\n  \"reason\": \"short explanation\"\n}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        160,
+        -464
+      ],
+      "id": "69d118a3-d7cf-4db9-b1d8-509b9cfdaa9d",
+      "name": "Expert"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an HR manager writing a professional recruitment email.\n\nCandidate information:\n- From: {{ $json.from }}\n- Position: {{ $json.subject }}\n- Score: {{ $json.score }}/100\n- Recommendation: {{ $json.recommendation }}\n- Matched skills: {{ $json.matched_skills }}\n- Missing skills: {{ $json.missing_skills }}\n- Reason: {{ $json.reason }}\n\nTASK:\nWrite a professional email response to the candidate.\n\nRULES:\n- If recommendation is \"accept\":\n  → write a warm acceptance email inviting them for an interview\n  → mention 1-2 matched skills\n- If recommendation is \"reject\":\n  → write a polite and encouraging rejection email\n  → wish them success\n\nSTYLE:\n- Professional and human tone\n- Maximum 150 words\n- DO NOT mention AI, automation, or scoring\n- Sign as: \"L'équipe RH\"\n\nLANGUAGE:\n- Detect the language from the candidate's email ({{ $json.body }})\n- Respond in the same language\n\nOUTPUT FORMAT (STRICT):\nReturn ONLY valid JSON. No explanation, no markdown, no text outside JSON.\n{\n  \"email_address\": \"{{ $json.from }}\",\n  \"score\": {{ $json.score }},\n  \"recommendation\": \"{{ $json.recommendation }}\",\n  \"reason\": \"{{ $json.reason }}\",\n  \"subject\": \"{{ $json.subject }}\",\n  \"text\": \"Full email body here\"\n}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        992,
+        -464
+      ],
+      "id": "9c9d6e89-20c7-45ec-89bb-fb0d29f7d3a9",
+      "name": "Under"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.text || \"\";\nconst cleaned = raw\n  .replace(/```json\\n?/gi, \"\")\n  .replace(/```/g, \"\")\n  .trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (e) {\n  return {\n    json: {\n      error: \"Invalid JSON from LLM\",\n      raw_output: raw,\n      skip_send: true\n    }\n  };\n}\n\nconst rawEmail = parsed.email_address || \"\";\nconst emailMatch = rawEmail.match(/<(.+?)>/);\nconst toEmail = emailMatch ? emailMatch[1] : rawEmail.trim();\n\nconst emailText = parsed.text || \"\";\n\nif (!toEmail || !emailText) {\n  return {\n    json: {\n      error: \"Missing email or message content\",\n      to_email: toEmail,\n      text: emailText,\n      skip_send: true\n    }\n  };\n}\n\nreturn {\n  json: {\n    to_email: toEmail,\n    text: emailText,\n    subject: \"Re: \" + (parsed.subject || \"your application\"),\n    skip_send: false,\n    score: parsed.score || 0,\n    recommendation: parsed.recommendation || \"\",\n    reason: parsed.reason || \"\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        -224
+      ],
+      "id": "ed84382c-8487-47d8-b6bb-9fd0c20143ad",
+      "name": "Cleaning"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const data = $json;\n\nconst subject = String(data.subject || \"\").toLowerCase();\nconst body = String(data.textPlain || data.textHtml || data.text || \"\").toLowerCase();\nconst combined = subject + \" \" + body;\n\nconst keywords = [\n  \"candidature\", \"cv\", \"application\",\n  \"postuler\", \"engineer\", \"automation\", \"poste\"\n];\n\nconst matched = keywords.filter(k => combined.includes(k));\nconst isMatch = matched.length > 0;\n\nconst binaryData = $binary || {};\nconst binaryKeys = Object.keys(binaryData);\nconst hasPDF = binaryKeys.length > 0;\n\nreturn {\n  json: {\n    keyword_match: isMatch && hasPDF,\n    has_attachment: hasPDF,\n    binary_keys: binaryKeys,\n    matched_keywords: matched,\n    subject: data.subject,\n    body: body,\n    from: data.from\n  },\n  binary: binaryData\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        -128
+      ],
+      "id": "3654fb89-e968-4f83-82df-ef07a3d63552",
+      "name": "Filtering"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\n\nlet from = \"\";\nlet subject = \"\";\nlet body = \"\";\nlet text = \"\";\n\nfor (const item of allItems) {\n  if (item.json.from) from = item.json.from;\n  if (item.json.subject) subject = item.json.subject;\n  if (item.json.body) body = item.json.body;\n  if (item.json.text && item.json.text.length > 0) text = item.json.text;\n}\n\nreturn {\n  json: {\n    from: from,\n    subject: subject,\n    body: body,\n    text: text,\n    debug_items: allItems.length\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -656
+      ],
+      "id": "358e9547-a098-4afe-911a-4e378c549691",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -272,
+        -288
+      ],
+      "id": "c2b27be1-0656-43ea-846b-017181b68f93",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1usvb21V1O3iKWiAuCtFURAGaVoMBGuWN9AD5M2IIPmA",
+          "mode": "list",
+          "cachedResultName": "saving_candidates",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1usvb21V1O3iKWiAuCtFURAGaVoMBGuWN9AD5M2IIPmA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1usvb21V1O3iKWiAuCtFURAGaVoMBGuWN9AD5M2IIPmA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ new Date().toISOString() }}",
+            "Email": "={{ $json.to_email }}",
+            "Subject": "={{ $json.subject }}",
+            "Score": "={{ $json.score }}",
+            "Decision": "={{ $json.recommendation }}",
+            "Reason": "={{ $json.reason }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Decision",
+              "displayName": "Decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1440,
+        -240
+      ],
+      "id": "432df6f3-1862-4b1b-84a9-3e5368eed969",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VsNzMbqFc6ejbp6k",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Filtering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Expert",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Under",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Under",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Under",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expert": {
+      "main": [
+        [
+          {
+            "node": "Parsing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Under": {
+      "main": [
+        [
+          {
+            "node": "Cleaning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleaning": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtering": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Expert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "86415f38-dac3-4631-8506-6276e7224098",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c7576a9c83a3752581f2dc08bfbc3d5104e96c9c4f288aafc0eccb7fbbb19549"
+  },
+  "id": "MOTkEn7FAtBBWpBo",
+  "tags": []
+}
