@@ -58,6 +58,7 @@ This project automates the entire first-stage recruitment process for an **AI Au
 
 ## 🏗️ Architecture
 
+<img width="1588" height="559" alt="Screenshot 2026-05-02 222325" src="https://github.com/user-attachments/assets/596ad887-2c25-47e0-a224-a135a8250ba6" />
 
 <img width="429" height="581" alt="architecture" src="https://github.com/user-attachments/assets/52563259-de95-4dc6-944e-c0df44d8144a" />
 
@@ -110,7 +111,7 @@ Every processed application is logged with:
 | **Email Trigger** | IMAP (Gmail) |
 | **Email Sending** | SMTP (Gmail) |
 | **LLM Provider** | OpenRouter (free tier) |
-| **LLM Models** | `meta-llama/llama-3.3-70b-instruct:free` |
+| **LLM Models** | `meta-llama/llama-3.3-70b-instruct:free` and `gpt-oss` |
 | **PDF Parsing** | n8n Extract from File |
 | **Data Storage** | Google Sheets |
 | **Scripting** | JavaScript (n8n Code nodes) |
