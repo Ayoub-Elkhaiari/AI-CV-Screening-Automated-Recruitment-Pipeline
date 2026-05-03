@@ -104,7 +104,7 @@ Every processed application is logged with:
 | Timestamp | Email | Subject | Score | Decision | Reason |
 |---|---|---|---|---|---|
 | 2026-04-28T23:10:43Z | candidate@gmail.com | Candidature AI Engineer | 85 | accept | Strong technical fit |
-
+this can help the ATS system in the future.
 ---
 
 ## 🛠️ Tech Stack
