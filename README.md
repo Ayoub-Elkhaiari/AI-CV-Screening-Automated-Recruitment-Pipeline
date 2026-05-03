@@ -2,12 +2,17 @@
 
 > An intelligent, fully automated recruitment workflow built with **n8n**, **OpenRouter LLMs**, and **Google Sheets** screens job applications, analyzes CVs, and sends personalized responses without human intervention.
 
-![n8n](https://img.shields.io/badge/n8n-Self--Hosted-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)
-![OpenRouter](https://img.shields.io/badge/LLM-OpenRouter%20Free-6366F1?style=for-the-badge&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Dashboard-34A853?style=for-the-badge&logo=googlesheets&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-Logic-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge)
+[![n8n](https://img.shields.io/badge/n8n-Self--Hosted-EA4B71?logo=n8n&logoColor=white)](https://n8n.io/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![OpenRouter](https://img.shields.io/badge/OpenRouter-Free%20LLMs-6366F1?logoColor=white)](https://openrouter.ai/)
+[![LLaMA](https://img.shields.io/badge/LLaMA-3.3%2070B-FF6B6B?logo=meta&logoColor=white)](https://openrouter.ai/models)
+[![GPT OSS](https://img.shields.io/badge/GPT--OSS-Open%20Source-74AA9C?logo=openai&logoColor=white)](https://openrouter.ai/models)
+[![JavaScript](https://img.shields.io/badge/JavaScript-Logic%20Nodes-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Gmail](https://img.shields.io/badge/Gmail-IMAP%20%2F%20SMTP-EA4335?logo=gmail&logoColor=white)](https://mail.google.com/)
+[![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Dashboard-34A853?logo=googlesheets&logoColor=white)](https://sheets.google.com/)
+[![PDF](https://img.shields.io/badge/PDF-CV%20Parsing-EC1C24?logo=adobeacrobatreader&logoColor=white)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Status](https://img.shields.io/badge/Status-Complete-brightgreen)]()
 
 ---
 
